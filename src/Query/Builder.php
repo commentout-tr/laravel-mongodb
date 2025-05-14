@@ -362,8 +362,10 @@ class Builder extends BaseBuilder
 
                     if ($column === '*' && $function === 'count' && ! $this->groups) {
                         $options = $this->inheritConnectionOptions($this->options);
-
-                        return ['estimatedDocumentCount' => [$wheres, $options]];
+                        if (empty($this->wheres)) {
+                            return ['estimatedDocumentCount' => [$options]];
+                        }
+                        return ['countDocuments' => [$wheres, $options]];
                     }
 
                     // "aggregate" is the name of the field that will hold the aggregated value.
